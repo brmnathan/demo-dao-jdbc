@@ -32,12 +32,16 @@ public class Program {
 		//sellerDao.insert(newSeller);
 		//System.out.println("Seller inserted! New id: " + newSeller.getId());
 		
-		System.out.println("\nTEST 4: Seller Update");
+		System.out.println("\nTEST 5: Seller Update");
 		seller = sellerDao.findById(1);
 		seller.setName("Anna White");
 		seller.setEmail("anna@gmail.com");
 		sellerDao.update(seller);
-		System.out.println("Update completed!");
+		System.out.println("Seller update completed!");
+		
+		System.out.println("\nTEST 6: Seller Delete");
+		sellerDao.deleteById(6);
+		System.out.println("Seller deleted successfully!");
 
 	}
 
