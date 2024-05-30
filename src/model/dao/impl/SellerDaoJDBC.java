@@ -26,13 +26,11 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void insert(Seller seller) {
-		String sql = "INSERT INTO seller "
-				+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
-				+ "VALUES "
+		String sql = "INSERT INTO seller " + "(Name, Email, BirthDate, BaseSalary, DepartmentId) " + "VALUES "
 				+ "(?, ?, ?, ?, ?)";
-		
+
 		PreparedStatement statement = null;
-		
+
 		try {
 			statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, seller.getName());
@@ -40,24 +38,22 @@ public class SellerDaoJDBC implements SellerDao {
 			statement.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
 			statement.setDouble(4, seller.getBaseSalary());
 			statement.setInt(5, seller.getDepartment().getId());
-			
+
 			int rowsAffected = statement.executeUpdate();
-			
-			if(rowsAffected == 0)
+
+			if (rowsAffected == 0)
 				throw new DbException("Error: no rows affected");
 			else {
 				ResultSet resultSet = statement.getGeneratedKeys();
-				if(resultSet.next()) {
+				if (resultSet.next()) {
 					int key = resultSet.getInt(1);
 					seller.setId(key);
 				}
 				DB.closeResultSet(resultSet);
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(statement);
 		}
 
@@ -65,7 +61,28 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void update(Seller seller) {
-		// TODO Auto-generated method stub
+		String sql = "UPDATE seller " 
+				+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+				+ "WHERE Id = ? ";
+		
+		PreparedStatement statement = null;
+
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, seller.getName());
+			statement.setString(2, seller.getEmail());
+			statement.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+			statement.setDouble(4, seller.getBaseSalary());
+			statement.setInt(5, seller.getDepartment().getId());
+			statement.setInt(6, seller.getId());
+
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(statement);
+		}
 
 	}
 
@@ -172,11 +189,9 @@ public class SellerDaoJDBC implements SellerDao {
 	@Override
 	public List<Seller> findAll() {
 
-		String sql = "SELECT seller.*,department.Name as DepName "
-				+ "FROM seller INNER JOIN department "
-				+ "ON seller.DepartmentId = department.Id "
-				+ "ORDER BY Name";
-		
+		String sql = "SELECT seller.*,department.Name as DepName " + "FROM seller INNER JOIN department "
+				+ "ON seller.DepartmentId = department.Id " + "ORDER BY Name";
+
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
