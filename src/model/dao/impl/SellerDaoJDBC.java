@@ -26,7 +26,8 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void insert(Seller seller) {
-		String sql = "INSERT INTO seller " + "(Name, Email, BirthDate, BaseSalary, DepartmentId) " + "VALUES "
+		String sql = "INSERT INTO seller " 
+				+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) " + "VALUES "
 				+ "(?, ?, ?, ?, ?)";
 
 		PreparedStatement statement = null;
@@ -110,6 +111,33 @@ public class SellerDaoJDBC implements SellerDao {
 
 	}
 
+	private Department instantiateDepartment(ResultSet resultSet) throws SQLException {
+		Department department = new Department();
+		department.setId(resultSet.getInt("DepartmentId"));
+		department.setName(resultSet.getString("DepName"));
+		
+		return department;
+	}
+	
+	private Seller instantiateSeller(ResultSet resultSet, Department department) throws SQLException {
+		Seller seller = new Seller();
+		seller.setId(resultSet.getInt("Id"));
+		seller.setName(resultSet.getString("Name"));
+		seller.setEmail(resultSet.getString("Email"));
+		seller.setBirthDate(resultSet.getDate("BirthDate"));
+		seller.setBaseSalary(resultSet.getDouble("BaseSalary"));
+		seller.setDepartment(department);
+		new Seller();
+		seller.setId(resultSet.getInt("Id"));
+		seller.setName(resultSet.getString("Name"));
+		seller.setEmail(resultSet.getString("Email"));
+		seller.setBirthDate(resultSet.getDate("BirthDate"));
+		seller.setBaseSalary(resultSet.getDouble("BaseSalary"));
+		seller.setDepartment(department);
+		
+		return seller;
+	}
+	
 	@Override
 	public Seller findById(Integer id) {
 
@@ -137,33 +165,6 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeStatement(statement);
 			DB.closeResultSet(resultSet);
 		}
-	}
-
-	private Department instantiateDepartment(ResultSet resultSet) throws SQLException {
-		Department department = new Department();
-		department.setId(resultSet.getInt("DepartmentId"));
-		department.setName(resultSet.getString("DepName"));
-
-		return department;
-	}
-
-	private Seller instantiateSeller(ResultSet resultSet, Department department) throws SQLException {
-		Seller seller = new Seller();
-		seller.setId(resultSet.getInt("Id"));
-		seller.setName(resultSet.getString("Name"));
-		seller.setEmail(resultSet.getString("Email"));
-		seller.setBirthDate(resultSet.getDate("BirthDate"));
-		seller.setBaseSalary(resultSet.getDouble("BaseSalary"));
-		seller.setDepartment(department);
-		new Seller();
-		seller.setId(resultSet.getInt("Id"));
-		seller.setName(resultSet.getString("Name"));
-		seller.setEmail(resultSet.getString("Email"));
-		seller.setBirthDate(resultSet.getDate("BirthDate"));
-		seller.setBaseSalary(resultSet.getDouble("BaseSalary"));
-		seller.setDepartment(department);
-
-		return seller;
 	}
 
 	@Override

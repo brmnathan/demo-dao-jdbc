@@ -27,7 +27,7 @@ public class Program {
 		List<Seller> sellerList02 = sellerDao.findAll();
 		sellerList02.forEach(System.out::println);
 		
-		//System.out.println("\nTEST 4: Seller Insert");
+		System.out.println("\nTEST 4: Seller Insert");
 		//Seller newSeller = new Seller("Greg Brown", null, "greg@gmail.com", new Date(), 4000.0, department);
 		//sellerDao.insert(newSeller);
 		//System.out.println("Seller inserted! New id: " + newSeller.getId());
@@ -40,8 +40,8 @@ public class Program {
 		System.out.println("Seller update completed!");
 		
 		System.out.println("\nTEST 6: Seller Delete");
-		sellerDao.deleteById(6);
-		System.out.println("Seller deleted successfully!");
+		//sellerDao.deleteById(6);
+		///System.out.println("Seller deleted successfully!");
 
 	}
 
